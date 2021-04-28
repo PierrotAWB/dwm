@@ -10,14 +10,14 @@ static const unsigned int gappov    = 20;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=12" };
+static const char *fonts[]          = { "monospace:size=12", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
 static const char dmenufont[]       = "monospace:size=12";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_bg[]          = "#005577";
-static const char col_border[]      = "#08a0c9";
+static const char col_border[]      = "#ffb405";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2  },
@@ -63,7 +63,9 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_bg, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "st", "-f", "monospace:size=16", NULL };
+static const char *muttcmd[]  = { "st", "-e", "neomutt", NULL };
+static const char *newsboatcmd[]  = { "st", "-e", "newsboat", NULL };
 static const char *browsercmd[]  = { "brave", NULL };
 
 static Key keys[] = {
@@ -71,6 +73,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,            	        XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,            	        XK_e, 	   spawn,          {.v = muttcmd } },
+	{ MODKEY,            	        XK_n, 	   spawn,          {.v = newsboatcmd } },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },
