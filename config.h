@@ -3,7 +3,7 @@
 /* appearance */
 
 /* settings */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
@@ -25,12 +25,13 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_black[]		= "#000000";
 
 static const char col_cyan[]        = "#005577";
+static const char col_red[]         = "#c91414";
 static const char col_border[]      = "#005577";
 
 static const char *colors[][3]      = {
 	/*               		   fg         bg         border   */
 	[SchemeNorm] 		= { col_gray3, col_gray1, col_gray2  },
-	[SchemeSel]  		= { col_gray4, col_cyan,  col_border },
+	[SchemeSel]  		= { col_gray4, col_cyan,  col_red    },
 	[SchemeStatus]  	= { col_gray3, col_gray1, col_black  }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
 	[SchemeTagsSel]  	= { col_gray4, col_cyan,  col_black  }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
     [SchemeTagsNorm]  	= { col_gray3, col_gray1, col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
