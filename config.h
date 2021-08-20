@@ -25,13 +25,13 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_black[]		= "#000000";
 
 static const char col_cyan[]        = "#005577";
-static const char col_red[]         = "#c91414";
-static const char col_border[]      = "#005577";
+static const char col_focus[]       = "#efe00e";
+static const char col_border[]      = "#efe00e";
 
 static const char *colors[][3]      = {
 	/*               		   fg         bg         border   */
 	[SchemeNorm] 		= { col_gray3, col_gray1, col_gray2  },
-	[SchemeSel]  		= { col_gray4, col_cyan,  col_red    },
+	[SchemeSel]  		= { col_gray4, col_cyan,  col_focus    },
 	[SchemeStatus]  	= { col_gray3, col_gray1, col_black  }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
 	[SchemeTagsSel]  	= { col_gray4, col_cyan,  col_black  }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
     [SchemeTagsNorm]  	= { col_gray3, col_gray1, col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
@@ -78,20 +78,18 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *browsercmd[]  = { "brave", NULL };
-static const char *muttcmd[]  = { "st", "-e", "neomutt", NULL };
-static const char *newsboatcmd[]  = { "st", "-e", "newsboat", NULL };
 static const char *scrotcmd[]  = { "scrot", "-e", "mv $f ~/pictures/screenshots", NULL };
-static const char *termcmd[]  = { "st", "-f", "monospace:size=16", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	{ MODKEY,                       XK_F1,     spawn,          SHCMD("aplkeys on") },
+	{ MODKEY,             			XK_F2,     spawn,          SHCMD("aplkeys off") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
-	{ MODKEY,            	        XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,            	        XK_e, 	   spawn,          {.v = muttcmd } },
-	{ MODKEY,            	        XK_n, 	   spawn,          {.v = newsboatcmd } },
-	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          {.v = browsercmd } },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f monospace:size=16") },
+	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
+	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
+	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },
@@ -143,7 +141,6 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
