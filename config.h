@@ -104,7 +104,9 @@ static Key keys[] = {
 	STACKKEYS(MODKEY|ShiftMask,                push)
 
 	{ MODKEY,             			XK_q,      killclient,     {0} },
-	{ MODKEY|ShiftMask,            	XK_q,      spawn,     	   SHCMD("slock") },
+	{ MODKEY|ControlMask,           XK_q,      spawn,     	   SHCMD("slock") },
+	{ MODKEY,            			XK_w,      defaultgaps,    {0} },
+	{ MODKEY|ShiftMask,            	XK_w,      togglegaps,     {0} },
 	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[2]} }, /* Monocle. */
@@ -114,13 +116,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredFloatingMaster. */
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
-	{ MODKEY,             			XK_o, 	   incrogaps,      {.i = +2} },
-	{ MODKEY|ShiftMask,    			XK_o, 	   incrogaps,      {.i = -2} },
-//  	{ MODKEY,             			XK_u, 	   incrgaps,       {.i = +2} },
-//  	{ MODKEY|ShiftMask,    			XK_u, 	   incrgaps,       {.i = -2} },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
+	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, /* Float. */
@@ -134,17 +133,14 @@ static Key keys[] = {
   	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
-	{ MODKEY,             			XK_z, 	   zoom,           {0} },
-	{ MODKEY,            	        XK_x, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
+	{ MODKEY,    			        XK_z, 	   incrgaps,       {.i = -3} },
+	{ MODKEY,             			XK_x, 	   incrgaps,       {.i = +3} },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
 
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-//  	{ MODKEY,             			XK_i, 	   incrigaps,      {.i = +2} },
-//  	{ MODKEY|ShiftMask,    			XK_i, 	   incrigaps,      {.i = -2} },
-	{ MODKEY,            			XK_equal,  defaultgaps,    {0} },
 
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
