@@ -103,11 +103,15 @@ static Key keys[] = {
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
 
+
 	{ MODKEY,             			XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask,           XK_q,      spawn,     	   SHCMD("slock") },
 	{ MODKEY,            			XK_w,      defaultgaps,    {0} },
 	{ MODKEY|ShiftMask,            	XK_w,      togglegaps,     {0} },
 	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
+	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
+//  	{ MODKEY,            	        XK_r, 	   spawn,          SHCMD("") },
+//  	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[2]} }, /* Monocle. */
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} }, /* Spiral. */
@@ -116,34 +120,45 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredFloatingMaster. */
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
+//  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
+//  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
+//  	{ MODKEY,           	        XK_p,	   spawn,          SHCMD("") },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
+
 	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
+//  	{ MODKEY|ShiftMask,       	    XK_s,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
+//  	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, /* Float. */
 	{ MODKEY,            			XK_g, 	   shiftview,      {.i = -1} },
 	{ MODKEY|ShiftMask,    			XK_g, 	   shifttag,       {.i = -1} },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|ShiftMask,     		XK_h, 	   zoom,           {0} },
-	{ MODKEY|ShiftMask,    			XK_l, 	   zoom,           {0} },
+//  	{ MODKEY|ShiftMask,       	    XK_h,	   spawn,          SHCMD("") },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+//  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
   	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
+
 	{ MODKEY,    			        XK_z, 	   incrgaps,       {.i = -3} },
+//  	{ MODKEY|ShiftMask,       	    XK_z,	   spawn,          SHCMD("") },
 	{ MODKEY,             			XK_x, 	   incrgaps,       {.i = +3} },
+//  	{ MODKEY|ShiftMask,       	    XK_x,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+//  	{ MODKEY|ShiftMask,       	    XK_b,	   spawn,          SHCMD("") },
 	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
+//  	{ MODKEY|ShiftMask,       	    XK_n,	   spawn,          SHCMD("") },
 
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+//  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+//  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
 	{ MODKEY,			            XK_Left,	focusmon,	{.i = -1 } },
 	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,		{.i = -1 } },
@@ -159,7 +174,6 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 };
 
 /* button definitions */
