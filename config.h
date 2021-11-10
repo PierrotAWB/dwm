@@ -57,11 +57,16 @@ static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] 
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "[@]",      spiral },
+	{ "[\\]",     dwindle },
+	{ "|M|", 	  centeredmaster }, 
+	{ ">M>",      centeredfloatingmaster }
 };
 
 /* key definitions */
@@ -102,12 +107,17 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,            	XK_q,      spawn,     	   SHCMD("slock") },
 	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
-	{ MODKEY,             			XK_o, 	   incrogaps,      {.i = +2} },
-	{ MODKEY|ShiftMask,    			XK_o, 	   incrogaps,      {.i = -2} },
-	{ MODKEY,             			XK_u, 	   incrgaps,       {.i = +2} },
-	{ MODKEY|ShiftMask,    			XK_u, 	   incrgaps,       {.i = -2} },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[2]} }, /* Monocle. */
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} }, /* Spiral. */
+	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[4]} }, /* Dwindle. */
+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, /* CentredMaster. */
+	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredFloatingMaster. */
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
+	{ MODKEY,             			XK_o, 	   incrogaps,      {.i = +2} },
+	{ MODKEY|ShiftMask,    			XK_o, 	   incrogaps,      {.i = -2} },
+//  	{ MODKEY,             			XK_u, 	   incrgaps,       {.i = +2} },
+//  	{ MODKEY|ShiftMask,    			XK_u, 	   incrgaps,       {.i = -2} },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
