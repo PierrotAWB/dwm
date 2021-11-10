@@ -3,7 +3,7 @@
 /* appearance */
 
 /* settings */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
@@ -25,7 +25,7 @@ static const char col_gray4[]       = "#eeeeee";
 static const char col_black[]		= "#000000";
 
 static const char col_cyan[]        = "#005577";
-static const char col_focus[]       = "#efe00e";
+static const char col_focus[]       = "#e2181c";
 static const char col_border[]      = "#efe00e";
 
 static const char *colors[][3]      = {
@@ -71,9 +71,19 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define STACKKEYS(MOD,ACTION) \
+	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
+	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
+	{ MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \
+	{ MOD, XK_m,     ACTION##stack, {.i = 0 } }, \
+	{ MOD, XK_a,     ACTION##stack, {.i = 1 } }, \
+/*	{ MOD, XK_z,     ACTION##stack, {.i = 2 } }, \
+	{ MOD, XK_x,     ACTION##stack, {.i = -1 } }, */
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+
+#include "shift-tools.c"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -84,44 +94,56 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_F1,     spawn,          SHCMD("aplkeys on") },
 	{ MODKEY,             			XK_F2,     spawn,          SHCMD("aplkeys off") },
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f monospace:size=16") },
+
+	STACKKEYS(MODKEY,                          focus)
+	STACKKEYS(MODKEY|ShiftMask,                push)
+
+	{ MODKEY,             			XK_q,      killclient,     {0} },
+	{ MODKEY|ShiftMask,            	XK_q,      spawn,     	   SHCMD("slock") },
 	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
-	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
-	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
-	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_l,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      focusmaster,    {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
-	{ Mod1Mask|ShiftMask,           XK_h,      setmfact,       {.f = -0.05} },
-	{ Mod1Mask|ShiftMask,           XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,             			XK_z, 	   zoom,           {0} },
-	{ MODKEY|ShiftMask,     		XK_h, 	   zoom,           {0} },
-	{ MODKEY|ShiftMask,    			XK_l, 	   zoom,           {0} },
-	{ MODKEY,             			XK_u, 	   incrgaps,       {.i = +2} },
-	{ MODKEY|ShiftMask,    			XK_u, 	   incrgaps,       {.i = -2} },
-	{ MODKEY,             			XK_i, 	   incrigaps,      {.i = +2} },
-	{ MODKEY|ShiftMask,    			XK_i, 	   incrigaps,      {.i = -2} },
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
 	{ MODKEY,             			XK_o, 	   incrogaps,      {.i = +2} },
 	{ MODKEY|ShiftMask,    			XK_o, 	   incrogaps,      {.i = -2} },
-	{ MODKEY|ShiftMask,    			XK_g, 	   togglegaps,     {0} },
-	{ MODKEY|ShiftMask,    			XK_equal,  defaultgaps,    {0} },
-	{ MODKEY,             			XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,             			XK_u, 	   incrgaps,       {.i = +2} },
+	{ MODKEY|ShiftMask,    			XK_u, 	   incrgaps,       {.i = -2} },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
+	{ MODKEY,                       XK_backslash, view,        {0} },
+
+	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
-	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, /* Float. */
+	{ MODKEY,            			XK_g, 	   shiftview,      {.i = -1} },
+	{ MODKEY|ShiftMask,    			XK_g, 	   shifttag,       {.i = -1} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ShiftMask,     		XK_h, 	   zoom,           {0} },
+	{ MODKEY|ShiftMask,    			XK_l, 	   zoom,           {0} },
+	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
+	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
+	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
+
+	{ MODKEY,             			XK_z, 	   zoom,           {0} },
+	{ MODKEY,            	        XK_x, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
+	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
+
+	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+//  	{ MODKEY,             			XK_i, 	   incrigaps,      {.i = +2} },
+//  	{ MODKEY|ShiftMask,    			XK_i, 	   incrigaps,      {.i = -2} },
+	{ MODKEY,            			XK_equal,  defaultgaps,    {0} },
+
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_m, 	   focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_m,  	   tagmon,         {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
+	{ MODKEY,			            XK_Left,	focusmon,	{.i = -1 } },
+	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,		{.i = -1 } },
+	{ MODKEY,			            XK_Right,	focusmon,	{.i = +1 } },
+	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,		{.i = +1 } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
