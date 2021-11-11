@@ -113,7 +113,6 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *scrotcmd[]  = { "scrot", "-e", "mv $f ~/pictures/screenshots", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -143,14 +142,14 @@ static Key keys[] = {
 //  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
 //  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
 	{ MODKEY,            	        XK_p, 	   togglescratch,  {.ui = 0} },
-	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
+	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          SHCMD("screenclip") },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
 
 	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
 //  	{ MODKEY|ShiftMask,       	    XK_s,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-//  	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("") },
+	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, /* Float. */
 	{ MODKEY,            			XK_g, 	   shiftview,      {.i = -1} },
@@ -161,7 +160,7 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=12\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
 
