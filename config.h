@@ -1,7 +1,5 @@
 /* See LICENSE file for copyright and license details. */
 
-/* appearance */
-
 /* settings */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -39,6 +37,23 @@ static const char *colors[][3]      = {
     [SchemeInfoNorm]  	= { col_gray3, col_gray1, col_black  }, /* infobar middle unselected {text,background, not used but cannot be empty}	*/
 };
 
+typedef struct {
+const char *name;
+	const void *cmd;
+} Sp;
+
+// Hardcoded, instead of using ENV Var.
+static const char schoolhome[]      = "/home/andrew/documents/university/4A/";
+const char *spcmd1[] = {"st", "-n", "sppython", "-g", "120x34", "-e", "python", "-q", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", "-d", schoolhome, NULL };
+
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"sppython",     spcmd1},
+	{"spfm",         spcmd2},
+};
+
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -50,6 +65,8 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	{ NULL,       "sppython", NULL,       SPTAG(0),     1,           -1 },
+	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 }
 };
 
 /* layout(s) */
@@ -110,7 +127,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,            	XK_w,      togglegaps,     {0} },
 	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
-//  	{ MODKEY,            	        XK_r, 	   spawn,          SHCMD("") },
+	{ MODKEY,            	        XK_r, 	   togglescratch,  {.ui = 1} },
 //  	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[2]} }, /* Monocle. */
@@ -122,7 +139,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
 //  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
 //  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
-//  	{ MODKEY,           	        XK_p,	   spawn,          SHCMD("") },
+	{ MODKEY,            	        XK_p, 	   togglescratch,  {.ui = 0} },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          {.v = scrotcmd } },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
@@ -153,6 +170,8 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_b,	   spawn,          SHCMD("") },
 	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
 //  	{ MODKEY|ShiftMask,       	    XK_n,	   spawn,          SHCMD("") },
+	{ MODKEY,       	            XK_period, spawn,          SHCMD("st -e ncmpcpp") },
+//  	{ MODKEY|Shift,       	        XK_period, spawn,      SHCMD("") },
 
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },

@@ -3,13 +3,13 @@ void
 shifttag(const Arg *arg)
 {
 	Arg shifted;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 
 	if (arg->i > 0)	/* left circular shift */
-		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i)));
+		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i))) & ~SPTAGMASK;
 	else		/* right circular shift */
-		shifted.ui = (shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i));
+		shifted.ui = (shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i)) & ~SPTAGMASK;
 	tag(&shifted);
 }
 /* Sends a window to the next/prev tag that has a client, else it moves it to the next/prev one. */
@@ -20,10 +20,10 @@ shifttagclients(const Arg *arg)
 	Arg shifted;
 	Client *c;
 	unsigned int tagmask = 0;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 	for (c = selmon->clients; c; c = c->next)
-		if (!(c->tags))
+		if (!(c->tags & SPTAGMASK))
 			tagmask = tagmask | c->tags;
 
 
@@ -31,11 +31,13 @@ shifttagclients(const Arg *arg)
 		do {
 			shifted.ui = (shifted.ui << arg->i)
 			   | (shifted.ui >> (LENGTH(tags) - arg->i));
+			shifted.ui &= ~SPTAGMASK;
 		} while (tagmask && !(shifted.ui & tagmask));
 	else		/* right circular shift */
 		do {
 			shifted.ui = (shifted.ui >> (- arg->i)
 			   | shifted.ui << (LENGTH(tags) + arg->i));
+			shifted.ui &= ~SPTAGMASK;
 		} while (tagmask && !(shifted.ui & tagmask));
 	tag(&shifted);
 }
@@ -44,12 +46,15 @@ void
 shiftview(const Arg *arg)
 {
 	Arg shifted;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
-	if (arg->i > 0)	/* left circular shift */
+	if (arg->i > 0) {/* left circular shift */
 		shifted.ui = (shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i));
-	else		/* right circular shift */
+		shifted.ui &= ~SPTAGMASK;
+	} else {	/* right circular shift */
 		shifted.ui = (shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i));
+		shifted.ui &= ~SPTAGMASK;
+	}
 	view(&shifted);
 }
 /* Navigate to the next/prev tag that has a client, else moves it to the next/prev tag */
@@ -59,10 +64,10 @@ shiftviewclients(const Arg *arg)
 	Arg shifted;
 	Client *c;
 	unsigned int tagmask = 0;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 	for (c = selmon->clients; c; c = c->next)
-		if (!(c->tags))
+		if (!(c->tags & SPTAGMASK))
 			tagmask = tagmask | c->tags;
 
 
@@ -70,11 +75,13 @@ shiftviewclients(const Arg *arg)
 		do {
 			shifted.ui = (shifted.ui << arg->i)
 			   | (shifted.ui >> (LENGTH(tags) - arg->i));
+			shifted.ui &= ~SPTAGMASK;
 		} while (tagmask && !(shifted.ui & tagmask));
 	else		/* right circular shift */
 		do {
 			shifted.ui = (shifted.ui >> (- arg->i)
 			   | shifted.ui << (LENGTH(tags) + arg->i));
+			shifted.ui &= ~SPTAGMASK;
 		} while (tagmask && !(shifted.ui & tagmask));
 	view(&shifted);
 }
@@ -83,23 +90,24 @@ void
 shiftboth(const Arg *arg)
 {
 	Arg shifted;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 	if (arg->i > 0)	/* left circular shift */
-		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i)));
+		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i))) & ~SPTAGMASK;
 	else		/* right circular shift */
-		shifted.ui = ((shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i)));
+		shifted.ui = ((shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i))) & ~SPTAGMASK;
 	tag(&shifted);
 	view(&shifted);
 }
-//helper function for shiftswaptags.
-//see: https://github.com/moizifty/DWM-Build/blob/65379c62640788881486401a0d8c79333751b02f/config.h#L48
+//helper function for shiftswaptags found on:
+//https://github.com/moizifty/DWM-Build/blob/65379c62640788881486401a0d8c79333751b02f/config.h#L48
+// modified to work with scratchpad
 void
 swaptags(const Arg *arg)
 {
 	Client *c;
 	unsigned int newtag = arg->ui & TAGMASK;
-	unsigned int curtag = selmon->tagset[selmon->seltags];
+	unsigned int curtag = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 	if (newtag == curtag || !curtag || (curtag & (curtag-1)))
 		return;
@@ -123,12 +131,12 @@ void
 shiftswaptags(const Arg *arg)
 {
 	Arg shifted;
-	shifted.ui = selmon->tagset[selmon->seltags];
+	shifted.ui = selmon->tagset[selmon->seltags] & ~SPTAGMASK;
 
 	if (arg->i > 0)	/* left circular shift */
-		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i)));
+		shifted.ui = ((shifted.ui << arg->i) | (shifted.ui >> (LENGTH(tags) - arg->i))) & ~SPTAGMASK;
 	else		/* right circular shift */
-		shifted.ui = ((shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i)));
+		shifted.ui = ((shifted.ui >> (- arg->i) | shifted.ui << (LENGTH(tags) + arg->i))) & ~SPTAGMASK;
 	swaptags(&shifted);
 	// uncomment if you also want to "go" (view) the tag where the the clients are going
 	//view(&shifted);
