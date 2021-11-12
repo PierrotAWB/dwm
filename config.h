@@ -86,6 +86,8 @@ static const Layout layouts[] = {
 	{ ">M>",      centeredfloatingmaster }
 };
 
+#include <X11/XF86keysym.h>
+
 /* key definitions */
 #define MODKEY Mod4Mask
 #define ALTMOD Mod1Mask
@@ -93,9 +95,10 @@ static const Layout layouts[] = {
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
-	{ ALTMOD,                       KEY,      focusnthmon,    {.i  = TAG } }, \
-    { ALTMOD|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+#define MONITORKEYS(KEY,TAG) \
+	{ MODKEY,                       KEY,      focusnthmon,    {.i  = TAG } }, \
+    { MODKEY|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
 #define STACKKEYS(MOD,ACTION) \
 	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
 	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
@@ -160,7 +163,7 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=12\"") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
 
@@ -181,10 +184,14 @@ static Key keys[] = {
 //  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 //  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
-	{ MODKEY,			            XK_Left,	focusmon,	{.i = -1 } },
-	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,		{.i = -1 } },
-	{ MODKEY,			            XK_Right,	focusmon,	{.i = +1 } },
-	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,		{.i = +1 } },
+//  	{ MODKEY,			            XK_Left,	spawn,	SHCMD("") },
+//  	{ MODKEY|ShiftMask,		        XK_Left,	spawn,	SHCMD("") },
+//  	{ MODKEY,			            XK_Right,	spawn,	SHCMD("") },
+//  	{ MODKEY|ShiftMask,		        XK_Right,	spawn,	SHCMD("") },
+
+/* How to bind modifiers only */
+//  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
+
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -195,6 +202,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+
+	MONITORKEYS(                    XF86XK_MonBrightnessDown,     0)
+	MONITORKEYS(                    XF86XK_MonBrightnessUp,       1)
+
 };
 
 /* button definitions */
