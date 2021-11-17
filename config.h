@@ -97,8 +97,8 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 #define MONITORKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      focusnthmon,    {.i  = TAG } }, \
-    { MODKEY|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
+	{ ALTMOD,                       KEY,      focusnthmon,    {.i  = TAG } }, \
+    { ALTMOD|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
 #define STACKKEYS(MOD,ACTION) \
 	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
 	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
@@ -184,10 +184,10 @@ static Key keys[] = {
 //  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 //  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
-//  	{ MODKEY,			            XK_Left,	spawn,	SHCMD("") },
-//  	{ MODKEY|ShiftMask,		        XK_Left,	spawn,	SHCMD("") },
-//  	{ MODKEY,			            XK_Right,	spawn,	SHCMD("") },
-//  	{ MODKEY|ShiftMask,		        XK_Right,	spawn,	SHCMD("") },
+	{ MODKEY,			            XK_Left,    focusmon,	   {.i = -1} },
+	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,	       {.i = -1} },
+	{ MODKEY,			            XK_Right,	focusmon,	   {.i = +1} },
+	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} },
 
 /* How to bind modifiers only */
 //  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
@@ -203,8 +203,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-	MONITORKEYS(                    XF86XK_MonBrightnessDown,     0)
-	MONITORKEYS(                    XF86XK_MonBrightnessUp,       1)
+	MONITORKEYS(                    XK_1,                      0)
+	MONITORKEYS(                    XK_2,                      1)
 
 };
 
