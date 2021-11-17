@@ -862,6 +862,8 @@ focus(Client *c)
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
 	if (selmon->sel && selmon->sel != c)
 		unfocus(selmon->sel, 0);
+	if (selmon->sel && selmon->sel->isfullscreen)
+		setfullscreen(selmon->sel, 0);
 	if (c) {
 		if (c->mon != selmon)
 			selmon = c->mon;
