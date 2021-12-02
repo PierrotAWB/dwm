@@ -149,7 +149,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
 
-	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=30\" -e calcurse") },
+	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=20\" -e calcurse") },
 //  	{ MODKEY|ShiftMask,       	    XK_s,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
