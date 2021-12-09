@@ -22,18 +22,20 @@ static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
 static const char col_black[]		= "#000000";
 
+static const char col_bg[]          = "#3e445e";
 static const char col_cyan[]        = "#005577";
-static const char col_focus[]       = "#e2181c";
+// static const char col_focus[]       = "#e2181c";
+static const char col_focus[]       = "#ffddff";
 static const char col_border[]      = "#efe00e";
 
 static const char *colors[][3]      = {
 	/*               		   fg         bg         border   */
 	[SchemeNorm] 		= { col_gray3, col_gray1, col_gray2  },
-	[SchemeSel]  		= { col_gray4, col_cyan,  col_focus    },
+	[SchemeSel]  		= { col_gray4, col_bg,  col_focus    },
 	[SchemeStatus]  	= { col_gray3, col_gray1, col_black  }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
-	[SchemeTagsSel]  	= { col_gray4, col_cyan,  col_black  }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
+	[SchemeTagsSel]  	= { col_gray4, col_bg,  col_black  }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
     [SchemeTagsNorm]  	= { col_gray3, col_gray1, col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
-    [SchemeInfoSel]  	= { col_gray4, col_cyan,  col_black  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
+    [SchemeInfoSel]  	= { col_gray4, col_bg,  col_black  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
     [SchemeInfoNorm]  	= { col_gray3, col_gray1, col_black  }, /* infobar middle unselected {text,background, not used but cannot be empty}	*/
 };
 
@@ -77,13 +79,14 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 #include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
-	{ "[@]",      spiral },
-	{ "[\\]",     dwindle },
-	{ "|M|", 	  centeredmaster }, 
-	{ ">M>",      centeredfloatingmaster }
+	{ "[]=",	tile },    /* first entry is default */
+	{ "|||",	col },
+	{ "><>",	NULL },    /* no layout function means floating behavior */
+	{ "[M]",	monocle },
+	{ "[@]",	spiral },
+	{ "[\\]",	dwindle },
+	{ "|M|",	centeredmaster }, 
+	{ ">M>",	centeredfloatingmaster },
 };
 
 #include <X11/XF86keysym.h>
@@ -135,12 +138,13 @@ static Key keys[] = {
 	{ MODKEY,            	        XK_r, 	   togglescratch,  {.ui = 1} },
 //  	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* Tile. */
-	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[2]} }, /* Monocle. */
-	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} }, /* Spiral. */
-	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[4]} }, /* Dwindle. */
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, /* CentredMaster. */
-	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredFloatingMaster. */
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[1]} }, /* Columns. */
+	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} }, /* Monocle. */
+//	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[4]} }, /* Spiral. */
+//	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, /* Dwindle. */
+// 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredMaster. */
+//	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[7]} }, /* CentredFloatingMaster. */
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },         
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
 //  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
 //  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
@@ -203,8 +207,10 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
-	MONITORKEYS(                    XK_1,                      0)
-	MONITORKEYS(                    XK_2,                      1)
+// Non-scalable; better to label monitors
+	MONITORKEYS(                    XK_1,                      1)
+	MONITORKEYS(                    XK_2,                      0)
+	MONITORKEYS(                    XK_3,                      2)
 
 };
 
