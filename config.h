@@ -1,5 +1,4 @@
 /* See LICENSE file for copyright and license details. */
-
 /* settings */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -12,8 +11,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 /* fonts */
-static const char *fonts[]          = { "monospace:size=12", "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
-static const char dmenufont[]       = "monospace:size=12";
+static const char *fonts[]          = { "monospace:size=16", "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
+static const char dmenufont[]       = "monospace:size=14";
 
 /* colours */
 static const char col_gray1[]       = "#222222";
@@ -29,13 +28,13 @@ static const char col_focus[]       = "#ffddff";
 static const char col_border[]      = "#efe00e";
 
 static const char *colors[][3]      = {
-	/*               		   fg         bg         border   */
-	[SchemeNorm] 		= { col_gray3, col_gray1, col_gray2  },
-	[SchemeSel]  		= { col_gray4, col_bg,  col_focus    },
-	[SchemeStatus]  	= { col_gray3, col_gray1, col_black  }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
-	[SchemeTagsSel]  	= { col_gray4, col_bg,  col_black  }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
+	/*               fg         bg         border   */
+	[SchemeNorm] 	= { norm_fg,    norm_bg,   	norm_border }, // unfocused wins
+	[SchemeSel]  	= { sel_fg,     sel_bg,    	sel_border },  // the focused win
+	[SchemeStatus] 	= { norm_fg,   	norm_bg,   	norm_border }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
+	[SchemeTagsSel] = { sel_fg, 	sel_bg,  	sel_border }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
     [SchemeTagsNorm]  	= { col_gray3, col_gray1, col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
-    [SchemeInfoSel]  	= { col_gray4, col_bg,  col_black  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
+    [SchemeInfoSel]  	= { norm_fg, 	norm_bg,  	norm_border  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
     [SchemeInfoNorm]  	= { col_gray3, col_gray1, col_black  }, /* infobar middle unselected {text,background, not used but cannot be empty}	*/
 };
 
@@ -45,14 +44,16 @@ const char *name;
 } Sp;
 
 // Hardcoded, instead of using ENV Var.
-static const char schoolhome[]      = "/home/andrew/documents/university/4A/";
+static const char cmd_home[]      = "/home/andrew/documents/university/4B/";
 const char *spcmd1[] = {"st", "-n", "sppython", "-g", "120x34", "-e", "python", "-q", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", "-d", schoolhome, NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lfub", "-d", cmd_home, NULL };
+const char *spcmd3[] = {"st", "-n", "spfzf", "-g", "80x36", "-e", "lfub", "--cmd=fzf_select", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
 	{"sppython",     spcmd1},
 	{"spfm",         spcmd2},
+	{"spfzf",	 spcmd3}
 };
 
 
@@ -68,7 +69,8 @@ static const Rule rules[] = {
 	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ NULL,       "sppython", NULL,       SPTAG(0),     1,           -1 },
-	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 }
+	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 },
+	{ NULL,       "spfzf",    NULL,       SPTAG(2),     1,           -1 }
 };
 
 /* layout(s) */
@@ -152,9 +154,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          SHCMD("screenclip") },
 	{ MODKEY,                       XK_backslash, view,        {0} },
 
-
-	{ MODKEY,            	        XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=20\" -e calcurse") },
-//  	{ MODKEY|ShiftMask,       	    XK_s,	   spawn,          SHCMD("") },
+	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 2} },
+	{ MODKEY|ShiftMask,             XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=20\" -e calcurse") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
@@ -167,7 +168,7 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=16\"") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=20\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
 
@@ -193,6 +194,9 @@ static Key keys[] = {
 	{ MODKEY,			            XK_Right,	focusmon,	   {.i = +1} },
 	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} },
 
+	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("light -A 5") },
+	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("light -U 5") },
+
 /* How to bind modifiers only */
 //  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
 
@@ -208,8 +212,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 
 // Non-scalable; better to label monitors
-	MONITORKEYS(                    XK_1,                      1)
-	MONITORKEYS(                    XK_2,                      0)
+	MONITORKEYS(                    XK_1,                      0)
+	MONITORKEYS(                    XK_2,                      1)
 	MONITORKEYS(                    XK_3,                      2)
 
 };
