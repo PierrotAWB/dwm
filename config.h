@@ -194,6 +194,9 @@ static Key keys[] = {
 	{ MODKEY,			            XK_Right,	focusmon,	   {.i = +1} },
 	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} },
 
+	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -36 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -36 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -36 $(pidof dwmblocks)") },
 	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("light -A 5") },
 	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("light -U 5") },
 
