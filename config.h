@@ -27,17 +27,6 @@ static const char col_cyan[]        = "#005577";
 static const char col_focus[]       = "#ffddff";
 static const char col_border[]      = "#efe00e";
 
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] 	= { norm_fg,    norm_bg,   	norm_border }, // unfocused wins
-	[SchemeSel]  	= { sel_fg,     sel_bg,    	sel_border },  // the focused win
-	[SchemeStatus] 	= { norm_fg,   	norm_bg,   	norm_border }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
-	[SchemeTagsSel] = { sel_fg, 	sel_bg,  	sel_border }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
-    [SchemeTagsNorm]  	= { col_gray3, col_gray1, col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
-    [SchemeInfoSel]  	= { norm_fg, 	norm_bg,  	norm_border  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
-    [SchemeInfoNorm]  	= { col_gray3, col_gray1, col_black  }, /* infobar middle unselected {text,background, not used but cannot be empty}	*/
-};
-
 typedef struct {
 const char *name;
 	const void *cmd;
@@ -87,7 +76,7 @@ static const Layout layouts[] = {
 	{ "[M]",	monocle },
 	{ "[@]",	spiral },
 	{ "[\\]",	dwindle },
-	{ "|M|",	centeredmaster }, 
+	{ "|M|",	centeredmaster },
 	{ ">M>",	centeredfloatingmaster },
 };
 
@@ -146,13 +135,13 @@ static Key keys[] = {
 //	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, /* Dwindle. */
 // 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredMaster. */
 //	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[7]} }, /* CentredFloatingMaster. */
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },         
-	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 //  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
+	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
 //  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
 	{ MODKEY,            	        XK_p, 	   togglescratch,  {.ui = 0} },
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          SHCMD("screenclip") },
-	{ MODKEY,                       XK_backslash, view,        {0} },
+	/* { MODKEY,                       XK_backslash, view,        {0} }, */
 
 	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 2} },
 	{ MODKEY|ShiftMask,             XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=20\" -e calcurse") },
