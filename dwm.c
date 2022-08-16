@@ -301,7 +301,6 @@ static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
 
 /* configuration, allows nested code to access above variables */
-#include "colors-wal-dwm.h"
 #include "config.h"
 
 /* compile-time check if all tags fit into an unsigned int bit array. */

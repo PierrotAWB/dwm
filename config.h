@@ -11,21 +11,39 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 /* fonts */
-static const char *fonts[]          = { "monospace:size=16", "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
+static const char *fonts[]          = { "SourceCodePro Light:size=20", "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
 static const char dmenufont[]       = "monospace:size=14";
 
 /* colours */
-static const char col_gray1[]       = "#222222";
+static const char col_gray1[]       = "#111111";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_black[]		= "#000000";
+static const char col_black[]	    = "#000000";
 
 static const char col_bg[]          = "#3e445e";
 static const char col_cyan[]        = "#005577";
 // static const char col_focus[]       = "#e2181c";
 static const char col_focus[]       = "#ffddff";
 static const char col_border[]      = "#efe00e";
+
+static const char norm_fg[]	= "#ffffff";
+static const char norm_bg[]	= "#000000";
+static const char norm_border[]	= "#111111";
+static const char sel_fg[]	= "#ffffff";
+static const char sel_bg[]	= "#000000";
+static const char sel_border[]	= "#bbbbbb";
+
+static const char *colors[][3]      = {
+	/*               		fg         bg             border   */
+	[SchemeNorm] 		= { norm_fg,    norm_bg,   	norm_border }, // unfocused wins
+	[SchemeSel]  		= { sel_fg,     sel_bg,    	sel_border },  // the focused win
+	[SchemeStatus]		= { norm_fg,   	norm_bg,   	norm_border }, /* Statusbar right {text,background, not used but cannot be empty} 				*/
+	[SchemeTagsSel]		= { sel_fg, 	sel_bg,  	sel_border }, /* Tagbar left selected {text,background, not used but cannot be empty}			*/
+    	[SchemeTagsNorm]	= { col_gray3, col_gray1, 	col_black  }, /* Tagbar left unselected {text,background, not used but cannot be empty} 		*/
+    	[SchemeInfoSel]		= { norm_fg, 	norm_bg,  	norm_border  }, /* infobar middle selected {text,background, not used but cannot be empty}		*/
+    	[SchemeInfoNorm]	= { col_gray3, col_gray1, 	col_black  }, /* infobar middle unselected {text,background, not used but cannot be empty}	*/
+};
 
 typedef struct {
 const char *name;
@@ -136,6 +154,7 @@ static Key keys[] = {
 // 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredMaster. */
 //	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[7]} }, /* CentredFloatingMaster. */
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
 //  	{ MODKEY,            	        XK_o, 	   spawn,          SHCMD("") },
 	{ MODKEY|ShiftMask,				XK_i,      incnmaster,     {.i = -1 } },
 //  	{ MODKEY|ShiftMask,             XK_o,      spawn,          SHCMD("") },
@@ -144,7 +163,7 @@ static Key keys[] = {
 	/* { MODKEY,                       XK_backslash, view,        {0} }, */
 
 	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 2} },
-	{ MODKEY|ShiftMask,             XK_s, 	   spawn,          SHCMD("st -f \"monospace:size=20\" -e calcurse") },
+	{ MODKEY|ShiftMask,             XK_s, 	   spawn,          SHCMD("st -f \"SourceCodePro Light:size=20\" -e calcurse") },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
@@ -157,7 +176,7 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"monospace:size=20\"") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"SourceCodePro Light:size=20\"") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
 
