@@ -11,8 +11,8 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 /* fonts */
-static const char *fonts[]          = { "SourceCodePro Light:size=20", "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
-static const char dmenufont[]       = "monospace:size=14";
+static const char *fonts[]          = { "mono:size=18", "JoyPixels:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:size=20"};
+static const char dmenufont[]       = "mono:size=14";
 
 /* colours */
 static const char col_gray1[]       = "#111111";
@@ -101,8 +101,8 @@ static const Layout layouts[] = {
 #include <X11/XF86keysym.h>
 
 /* key definitions */
-#define MODKEY Mod4Mask
-#define ALTMOD Mod1Mask
+#define MODKEY Mod1Mask
+#define ALTMOD Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -132,7 +132,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_F1,     spawn,          SHCMD("aplkeys on") },
-	{ MODKEY,             			XK_F2,     spawn,          SHCMD("aplkeys off") },
+	{ MODKEY,             		XK_F2,     spawn,          SHCMD("aplkeys off") },
 
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
@@ -201,12 +201,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,	       {.i = -1} },
 	{ MODKEY,			            XK_Right,	focusmon,	   {.i = +1} },
 	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} },
-
-	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -36 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -36 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -36 $(pidof dwmblocks)") },
-	{ 0, XF86XK_MonBrightnessUp,	spawn,		SHCMD("light -A 5") },
-	{ 0, XF86XK_MonBrightnessDown,	spawn,		SHCMD("light -U 5") },
 
 /* How to bind modifiers only */
 //  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
