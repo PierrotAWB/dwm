@@ -8,10 +8,10 @@ static const unsigned int gappoh    = 20;       /* horiz outer gap between windo
 static const unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
+static const int topbar             = 0;        /* 0 means bottom bar */
 
 /* fonts */
-static const char *fonts[]          = { "mono:size=18", "JoyPixels:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:size=20"};
+static const char *fonts[]          = { "mono:size=18", "Font Awesome 6 Brands,Font Awesome 6 Brands Regular:style=Regular", "JoyPixels:pixelsize=14:antialias=true:autohint=true", "NotoColorEmoji:size=20"};
 static const char dmenufont[]       = "mono:size=14";
 
 /* colours */
@@ -52,15 +52,17 @@ const char *name;
 
 // Hardcoded, instead of using ENV Var.
 static const char cmd_home[]      = "/home/andrew/documents/university/4B/";
-const char *spcmd1[] = {"st", "-n", "sppython", "-g", "120x34", "-e", "python", "-q", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lfub", "-d", cmd_home, NULL };
-const char *spcmd3[] = {"st", "-n", "spfzf", "-g", "80x36", "-e", "lfub", "--cmd=fzf_select", NULL };
+const char *spcmd0[] = {"st", "-n", "sppython", "-g", "120x34", "-e", "python", "-q", NULL };
+const char *spcmd1[] = {"st", "-n", "spfm", "-g", "80x20", "-e", "lfub", NULL };
+const char *spcmd2[] = {"st", "-n", "spfzf", "-g", "80x20", "-e", "lfub", "-command", "$lf -remote \"send $id select \\\"$(find . | fzf)\\\"\"", NULL };
+const char *spcmd3[] = {"st", "-n", "spst", "-g", "80x20", NULL };
 
 static Sp scratchpads[] = {
 	/* name          cmd  */
-	{"sppython",     spcmd1},
-	{"spfm",         spcmd2},
-	{"spfzf",	 spcmd3}
+	{"sppython",     spcmd0},
+	{"spfm",         spcmd1},
+	{"spfzf",	 spcmd2},
+	{"spst",	 spcmd3}
 };
 
 
@@ -77,7 +79,8 @@ static const Rule rules[] = {
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ NULL,       "sppython", NULL,       SPTAG(0),     1,           -1 },
 	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 },
-	{ NULL,       "spfzf",    NULL,       SPTAG(2),     1,           -1 }
+	{ NULL,       "spfzf",    NULL,       SPTAG(2),     1,           -1 },
+	{ NULL,       "spst",	  NULL,       SPTAG(3),     1,           -1 }
 };
 
 /* layout(s) */
@@ -137,6 +140,15 @@ static Key keys[] = {
 	STACKKEYS(MODKEY,                          focus)
 	STACKKEYS(MODKEY|ShiftMask,                push)
 
+	{ 0, XF86XK_AudioMute,		spawn,		SHCMD("pamixer -t; kill -36 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioRaiseVolume,	spawn,		SHCMD("pamixer --allow-boost -i 3; kill -36 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioLowerVolume,	spawn,		SHCMD("pamixer --allow-boost -d 3; kill -36 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioPrev,		spawn,		{.v = (const char*[]){ "mpc", "prev", NULL } } },
+	{ 0, XF86XK_AudioNext,		spawn,		{.v = (const char*[]){ "mpc",  "next", NULL } } },
+	{ 0, XF86XK_AudioPlay,		spawn,		{.v = (const char*[]){ "mpc", "toggle", NULL } } },
+
+	{ 0, XK_F5,	spawn,		{.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
+	{ 0, XK_F6,	spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
 
 	{ MODKEY,             			XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask,           XK_q,      spawn,     	   SHCMD("slock") },
@@ -162,8 +174,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,    	        XK_p,	   spawn,          SHCMD("screenclip") },
 	/* { MODKEY,                       XK_backslash, view,        {0} }, */
 
-	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 2} },
-	{ MODKEY|ShiftMask,             XK_s, 	   spawn,          SHCMD("st -f \"SourceCodePro Light:size=20\" -e calcurse") },
+	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 3} },
+	{ MODKEY|ShiftMask,        	XK_s, 	   togglescratch,  {.ui = 2} },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
@@ -173,10 +185,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 //  	{ MODKEY|ShiftMask,       	    XK_h,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-//  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("") },
+  	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("fcitx5-remote -t; kill -39 $(pidof dwmblocks)") }, /* Switch language */
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st -f \"SourceCodePro Light:size=20\"") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st") },
 	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
 
 
@@ -191,7 +203,7 @@ static Key keys[] = {
 	{ MODKEY,       	            XK_period, spawn,          SHCMD("st -e ncmpcpp") },
 //  	{ MODKEY|Shift,       	        XK_period, spawn,      SHCMD("") },
 
-	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+ 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 
 //  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
