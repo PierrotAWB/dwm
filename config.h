@@ -52,7 +52,7 @@ const char *name;
 
 // Hardcoded, instead of using ENV Var.
 static const char cmd_home[]      = "/home/andrew/documents/university/4B/";
-const char *spcmd0[] = {"st", "-n", "sppython", "-g", "120x34", "-e", "python", "-q", NULL };
+const char *spcmd0[] = {"st", "-n", "sppython", "-g", "80x20", "-e", "python", "-q", NULL };
 const char *spcmd1[] = {"st", "-n", "spfm", "-g", "80x20", "-e", "lfub", NULL };
 const char *spcmd2[] = {"st", "-n", "spfzf", "-g", "80x20", "-e", "lfub", "-command", "$lf -remote \"send $id select \\\"$(find . | fzf)\\\"\"", NULL };
 const char *spcmd3[] = {"st", "-n", "spst", "-g", "80x20", NULL };
@@ -131,10 +131,11 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *roficmd[] = { "rofi", "-show", "combi", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_F1,     spawn,          SHCMD("aplkeys on") },
+	{ MODKEY,                   XK_F1,     spawn,          SHCMD("aplkeys on") },
 	{ MODKEY,             		XK_F2,     spawn,          SHCMD("aplkeys off") },
 
 	STACKKEYS(MODKEY,                          focus)
@@ -147,14 +148,16 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioNext,		spawn,		{.v = (const char*[]){ "mpc",  "next", NULL } } },
 	{ 0, XF86XK_AudioPlay,		spawn,		{.v = (const char*[]){ "mpc", "toggle", NULL } } },
 
-	{ 0, XK_F5,	spawn,		{.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } },
-	{ 0, XK_F6,	spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } },
+
+	/* { 0, XF86XK_MonBrightnessUp,	spawn,		{.v = (const char*[]){ "xbacklight", "-inc", "5", NULL } } }, */
+	/* { 0, XF86XK_MonBrightnessDown,	spawn,		{.v = (const char*[]){ "xbacklight", "-dec", "5", NULL } } }, */
 
 	{ MODKEY,             			XK_q,      killclient,     {0} },
 	{ MODKEY|ControlMask,           XK_q,      spawn,     	   SHCMD("slock") },
 	{ MODKEY,            			XK_w,      defaultgaps,    {0} },
 	{ MODKEY|ShiftMask,            	XK_w,      togglegaps,     {0} },
-	{ MODKEY,            	        XK_e, 	   spawn,          SHCMD("st -e neomutt") },
+	/* { MODKEY,            	        XK_e, 	   spawn,          SHCMD("emacsclient -c") }, */
+	{ MODKEY|ShiftMask,            	XK_e, 	   spawn,          SHCMD("st -n Mail -e neomutt") },
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 	{ MODKEY,            	        XK_r, 	   togglescratch,  {.ui = 1} },
 //  	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
@@ -162,7 +165,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[1]} }, /* Columns. */
 	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[3]} }, /* Monocle. */
 //	{ MODKEY|ShiftMask,             XK_y,      setlayout,      {.v = &layouts[4]} }, /* Spiral. */
-//	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, /* Dwindle. */
+	{ MODKEY,                       XK_u,      spawn,          SHCMD("tabbed surf -e") },
 // 	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[6]} }, /* CentredMaster. */
 //	{ MODKEY|ShiftMask,             XK_u,      setlayout,      {.v = &layouts[7]} }, /* CentredFloatingMaster. */
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -180,7 +183,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} }, /* Float. */
-	{ MODKEY,            			XK_g, 	   shiftview,      {.i = -1} },
+	{ MODKEY,            			XK_g, 	   spawn,          SHCMD("chat-gpt") },
 	{ MODKEY|ShiftMask,    			XK_g, 	   shifttag,       {.i = -1} },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 //  	{ MODKEY|ShiftMask,       	    XK_h,	   spawn,          SHCMD("") },
@@ -188,31 +191,31 @@ static Key keys[] = {
   	{ MODKEY|ShiftMask,       	    XK_l,	   spawn,          SHCMD("fcitx5-remote -t; kill -39 $(pidof dwmblocks)") }, /* Switch language */
 	{ MODKEY,            			XK_semicolon, 	   shiftview,      {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_semicolon, 	   shifttag,       {.i = +1} },
-  	{ MODKEY,             			XK_Return, spawn,          SHCMD("st") },
-	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("brave") },
+  	{ MODKEY,             			XK_Return, spawn,          SHCMD("tabbed -r 2 st -w ''") },
+	{ MODKEY|ShiftMask,    	        XK_Return, spawn,          SHCMD("tabbed surf -e") },
 
 
 	{ MODKEY,    			        XK_z, 	   incrgaps,       {.i = -3} },
 //  	{ MODKEY|ShiftMask,       	    XK_z,	   spawn,          SHCMD("") },
-	{ MODKEY,             			XK_x, 	   incrgaps,       {.i = +3} },
+	/* { MODKEY,             			XK_x, 	   incrgaps,       {.i = +3} }, */
 //  	{ MODKEY|ShiftMask,       	    XK_x,	   spawn,          SHCMD("") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 //  	{ MODKEY|ShiftMask,       	    XK_b,	   spawn,          SHCMD("") },
-	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -e newsboat") },
+	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -n RSS -e newsboat") },
 //  	{ MODKEY|ShiftMask,       	    XK_n,	   spawn,          SHCMD("") },
-	{ MODKEY,       	            XK_period, spawn,          SHCMD("st -e ncmpcpp") },
+	{ MODKEY,       	            XK_period, spawn,          SHCMD("st -n Music -e ncmpcpp") },
 //  	{ MODKEY|Shift,       	        XK_period, spawn,      SHCMD("") },
 
- 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+ 	{ MODKEY,                       XK_space,  spawn,          { .v = roficmd } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 
-//  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+//  	{ MODKEY,                       XK_14,      view,           {.ui = ~0 } },
 //  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 
-	{ MODKEY,			            XK_Left,    focusmon,	   {.i = -1} },
-	{ MODKEY|ShiftMask,		        XK_Left,	tagmon,	       {.i = -1} },
-	{ MODKEY,			            XK_Right,	focusmon,	   {.i = +1} },
-	{ MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} },
+	/* { MODKEY,			            XK_Left,    focusmon,	   {.i = -1} }, */
+	/* { MODKEY|ShiftMask,		        XK_Left,	tagmon,	       {.i = -1} }, */
+	/* { MODKEY,			            XK_Right,	focusmon,	   {.i = +1} }, */
+	/* { MODKEY|ShiftMask,		        XK_Right,	tagmon,	       {.i = +1} }, */
 
 /* How to bind modifiers only */
 //  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
