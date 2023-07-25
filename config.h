@@ -1,8 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 /* settings */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
+static const unsigned int snap      = 32;       /* snap pixel */ static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 20;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 20;       /* vert outer gap between windows and screen edge */
@@ -156,8 +155,7 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_q,      spawn,     	   SHCMD("slock") },
 	{ MODKEY,            			XK_w,      defaultgaps,    {0} },
 	{ MODKEY|ShiftMask,            	XK_w,      togglegaps,     {0} },
-	/* { MODKEY,            	        XK_e, 	   spawn,          SHCMD("emacsclient -c") }, */
-	{ MODKEY|ShiftMask,            	XK_e, 	   spawn,          SHCMD("st -n Mail -e neomutt") },
+	{ MODKEY,                   	XK_e, 	   spawn,          SHCMD("st -n Mail -e neomutt") },
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 	{ MODKEY,            	        XK_r, 	   togglescratch,  {.ui = 1} },
 //  	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("") },
@@ -178,7 +176,7 @@ static Key keys[] = {
 	/* { MODKEY,                       XK_backslash, view,        {0} }, */
 
 	{ MODKEY,            	        XK_s, 	   togglescratch,  {.ui = 3} },
-	{ MODKEY|ShiftMask,        	XK_s, 	   togglescratch,  {.ui = 2} },
+	{ MODKEY|ShiftMask,        	    XK_s, 	   togglescratch,  {.ui = 2} },
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,       	    XK_d,	   spawn,          SHCMD("passmenu --type") },
 	{ MODKEY,                       XK_f,      togglefullscr,  {0} },
@@ -199,6 +197,8 @@ static Key keys[] = {
 //  	{ MODKEY|ShiftMask,       	    XK_z,	   spawn,          SHCMD("") },
 	/* { MODKEY,             			XK_x, 	   incrgaps,       {.i = +3} }, */
 //  	{ MODKEY|ShiftMask,       	    XK_x,	   spawn,          SHCMD("") },
+
+
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 //  	{ MODKEY|ShiftMask,       	    XK_b,	   spawn,          SHCMD("") },
 	{ MODKEY,            	        XK_n, 	   spawn,          SHCMD("st -n RSS -e newsboat") },
@@ -219,7 +219,8 @@ static Key keys[] = {
 
 /* How to bind modifiers only */
 //  	{ MODKEY,			            XK_Shift_L, focusmon,	{.i = +1 } },
-
+//
+	{ MODKEY,                       XK_Tab,      goback,         {0} },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
